@@ -1,20 +1,21 @@
 <?php
-  require "php/db_connection.php";
+require_once 'config/functions.php';
 
-  if($con) {
-    $query = "UPDATE admin_credentials SET IS_LOGGED_IN = 'false'";
-    $result = mysqli_query($con, $query);
-  }
+if (isLoggedIn()) {
+    logActivity('User Logout', "User {$_SESSION['user_email']} logged out");
+}
+
+// Clear all session data
+$_SESSION = array();
+
+// Destroy session cookie
+if (isset($_COOKIE[session_name()])) {
+    setcookie(session_name(), '', time() - 3600, '/');
+}
+
+// Destroy session
+session_destroy();
+
+// Redirect to home
+redirect('index.php');
 ?>
-
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Logout</title>
-    <script src="js/restrict.js"></script>
-  </head>
-  <body>
-
-  </body>
-</html>

@@ -1,136 +1,129 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Pharmacy Management - Login</title>
-    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
-		<script src="bootstrap/js/jquery.min.js"></script>
-		<script src="bootstrap/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-    <link rel="shortcut icon" href="images/icon.svg" type="image/x-icon">
-    <link rel="stylesheet" href="css/index.css">
-    <script src="js/index.js"></script>
-    <script src="js/validateForm.js"></script>
-    <script>
-      var xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
-        if(xhttp.readyState = 4 && xhttp.status == 200)
-          xhttp.responseText;
-      };
-      xhttp.open("GET", "php/db_connection.php?action=is_logged_in", false);
-      xhttp.send();
+<?php
+require_once 'config/functions.php';
+$page_title = 'Login';
 
-      //alert(xhttp.responseText);
-      if(xhttp.responseText == "")
-        window.location.href = "http://localhost/Pharmacy-Management/index.html";
-      if(xhttp.responseText == "true")
-        window.location.href = "http://localhost/Pharmacy-Management/home.php";
+// Redirect if already logged in
+if (isLoggedIn()) {
+    redirect('index.php');
+}
 
-    </script>
-  </head>
-  <body>
+$error = '';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = sanitize($_POST['email'] ?? '');
+    $password = $_POST['password'] ?? '';
+    
+    if (empty($email) || empty($password)) {
+        $error = 'Please enter both email and password.';
+    } else {
+        $db = getDB();
+        $stmt = $db->prepare("SELECT * FROM users WHERE email = ? AND status = 'active'");
+        $stmt->execute([$email]);
+        $user = $stmt->fetch();
+        
+        if ($user && password_verify($password, $user['password'])) {
+            // Login successful
+            $_SESSION['user_id'] = $user['id'];
+            $_SESSION['user_name'] = $user['name'];
+            $_SESSION['user_email'] = $user['email'];
+            $_SESSION['user_role'] = $user['role'];
+            
+            // Transfer guest cart to user cart
+            if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])) {
+                foreach ($_SESSION['cart'] as $product_id => $item) {
+                    addToCart($product_id, $item['quantity']);
+                }
+                unset($_SESSION['cart']);
+            }
+            
+            logActivity('User Login', "User {$user['email']} logged in");
+            
+            // Redirect based on role
+            if ($user['role'] === 'admin' || $user['role'] === 'editor') {
+                redirect('admin/');
+            } else {
+                redirect('index.php');
+            }
+        } else {
+            $error = 'Invalid email or password.';
+        }
+    }
+}
+
+include 'includes/header.php';
+?>
+
+<section class="py-5">
     <div class="container">
-
-      <div id="login-form" class="card m-auto p-2">
-        <div class="card-body">
-          <form name="login-form" class="login-form" action="home.php" method="post" onsubmit="return validateCredentials();">
-            <div class="logo">
-        			<img src="images/prof.jpg" class="profile"/>
-        			<h1 class="logo-caption"><span class="tweak">L</span>ogin</h1>
-        		</div> <!-- logo class -->
-            <div class="input-group form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fas fa-user text-white"></i></span>
-              </div>
-              <input name="username" type="text" class="form-control" placeholder="username" onkeyup="validate();" required>
-            </div> <!--input-group class -->
-            <div class="input-group form-group">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fas fa-key text-white"></i></span>
-              </div>
-              <input name="password" type="password" class="form-control" placeholder="password" onkeyup="validate();" required>
-            </div> <!-- input-group class -->
-            <div class="form-group">
-              <button class="btn btn-default btn-block btn-custom">Login</button>
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-lg-5">
+                <div class="card auth-card">
+                    <div class="card-body p-5">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-user-circle fa-4x text-primary mb-3"></i>
+                            <h2 class="fw-bold">Welcome Back</h2>
+                            <p class="text-muted">Sign in to your account</p>
+                        </div>
+                        
+                        <?php if ($error): ?>
+                            <div class="alert alert-danger" role="alert">
+                                <i class="fas fa-exclamation-circle me-2"></i><?php echo $error; ?>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <form method="POST" action="">
+                            <!-- Email input -->
+                            <div class="form-floating mb-4">
+                                <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required>
+                                <label for="email">Email address</label>
+                            </div>
+                            
+                            <!-- Password input -->
+                            <div class="form-floating mb-4">
+                                <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+                                <label for="password">Password</label>
+                            </div>
+                            
+                            <!-- Remember me & Forgot password -->
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="remember" name="remember">
+                                    <label class="form-check-label" for="remember">Remember me</label>
+                                </div>
+                                <a href="forgot-password.php" class="text-primary">Forgot password?</a>
+                            </div>
+                            
+                            <!-- Submit button -->
+                            <button type="submit" class="btn btn-primary btn-lg w-100 mb-4">
+                                <i class="fas fa-sign-in-alt me-2"></i>Sign In
+                            </button>
+                            
+                            <!-- Register link -->
+                            <div class="text-center">
+                                <p class="mb-0">Don't have an account? <a href="register.php" class="text-primary fw-bold">Register</a></p>
+                            </div>
+                        </form>
+                        
+                        <!-- Social Login -->
+                        <div class="mt-4">
+                            <p class="text-center text-muted mb-3">Or sign in with</p>
+                            <div class="d-flex gap-2 justify-content-center">
+                                <button type="button" class="btn btn-outline-primary btn-floating">
+                                    <i class="fab fa-google"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-primary btn-floating">
+                                    <i class="fab fa-facebook-f"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-primary btn-floating">
+                                    <i class="fab fa-twitter"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </form><!-- form close -->
+        </div>
+    </div>
+</section>
 
-        </div> <!-- cord-body class -->
-        <div class="card-footer">
-          <div class="text-center">
-            <a class="text-light" onclick="displayForgotPasswordForm();" style="cursor: pointer;">Forgot password?</a>
-          </div>
-        </div> <!-- cord-footer class -->
-      </div> <!-- card class -->
-
-      <div id="forgot-password-form" class="card m-auto p-2" style="display: none;">
-        <div class="card-body">
-          <div name="login-form" class="login-form">
-            <div class="logo">
-              <img src="images/prof.jpg" class="profile"/>
-              <h1 class="logo-caption"><span class="tweak">F</span>orget <span class="tweak">P</span>assword</h1>
-            </div> <!-- logo class -->
-
-            <div id="email-number-fields">
-              <p class="h6 text-center text-light">Enter email and contact number below to reset username and password<p>
-              <div class="input-group form-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fas fa-envelope text-white"></i></span>
-                </div>
-                <input id="email" type="email" class="form-control" placeholder="enter email" required>
-              </div> <!--input-group class -->
-
-              <div class="input-group form-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fas fa-key text-white"></i></span>
-                </div>
-                <input id="contact_number" type="number" class="form-control" placeholder="enter contact number" onkeyup="validate();" required>
-              </div> <!-- input-group class -->
-
-              <div class="form-group">
-                <button class="btn btn-default btn-block btn-custom" onclick="verifyEmailNumber();">Verify</button>
-              </div>
-            </div>
-
-
-            <div id="username-password-fields" style="display: none;">
-              <div class="input-group form-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fas fa-user text-white"></i></span>
-                </div>
-                <input id="username" type="text" class="form-control" placeholder="enter username" onblur="notNull(this.value, 'username_error');" >
-              </div> <!--input-group class -->
-              <code class="text-light small font-weight-bold float-right mb-2" id="username_error" style="display: none;"></code>
-
-              <div class="input-group form-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fas fa-lock text-white"></i></span>
-                </div>
-                <input id="password" type="text" class="form-control" placeholder="enter password" onkeyup="validatePassword();" >
-              </div> <!-- input-group class -->
-              <code class="text-light small font-weight-bold float-right mb-2" id="password_error" style="display: none;"></code>
-
-              <div class="input-group form-group">
-                <div class="input-group-prepend">
-                  <span class="input-group-text"><i class="fas fa-key text-white"></i></span>
-                </div>
-                <input id="confirm_password" type="password" class="form-control" placeholder="confirm password" onkeyup="validatePassword();" >
-              </div> <!-- input-group class -->
-              <code class="text-light small font-weight-bold float-right mb-2" id="confirm_password_error" style="display: none;"></code>
-              <div class="form-group">
-                <button class="btn btn-default btn-block btn-custom" onclick="updateUsernamePassword();">Reset Password</button>
-              </div>
-            </div>
-          </div><!-- form close -->
-
-        </div> <!-- cord-body class -->
-        <div class="card-footer">
-          <div class="text-center">
-            <a class="text-light" onclick="displayLoginForm();" style="cursor: pointer;">Login here</a>
-          </div>
-        </div> <!-- cord-footer class -->
-      </div> <!-- card class -->
-
-    </div> <!-- container class -->
-  </body>
-</html>
+<?php include 'includes/footer.php'; ?>

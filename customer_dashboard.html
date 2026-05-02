@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - PharmaCare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo i {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .logo span {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 10px;
+            transition: background 0.2s;
+        }
+
+        .user-menu:hover {
+            background: #f1f5f9;
+        }
+
+        .user-menu img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+        }
+
+        .user-menu span {
+            font-weight: 500;
+            color: #374151;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        /* Welcome Banner */
+        .welcome-banner {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 16px;
+            padding: 32px;
+            color: white;
+            margin-bottom: 32px;
+        }
+
+        .welcome-banner h1 {
+            font-size: 1.75rem;
+            margin-bottom: 8px;
+        }
+
+        .welcome-banner p {
+            opacity: 0.9;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .stat-card h3 {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+        .stat-card p {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        /* Two Column Layout */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 32px;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+
+        .profile-card h2 {
+            font-size: 1.25rem;
+            margin-bottom: 4px;
+        }
+
+        .profile-card p {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .profile-actions {
+            margin-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: #6b7280;
+            border: 2px solid #e5e7eb;
+        }
+
+        .btn-outline:hover {
+            border-color: #10b981;
+            color: #10b981;
+        }
+
+        .btn-danger {
+            background: #fef2f2;
+            color: #dc2626;
+        }
+
+        .btn-danger:hover {
+            background: #fecaca;
+        }
+
+        /* Orders Section */
+        .orders-section {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .orders-section h2 {
+            font-size: 1.25rem;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .orders-section h2 i {
+            color: #10b981;
+        }
+
+        .empty-orders {
+            text-align: center;
+            padding: 48px;
+            color: #6b7280;
+        }
+
+        .empty-orders i {
+            font-size: 3rem;
+            margin-bottom: 16px;
+            color: #d1d5db;
+        }
+
+        .order-item {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .order-info h4 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .order-info span {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .order-status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-delivery {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .order-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .order-meta {
+            display: flex;
+            gap: 24px;
+        }
+
+        .order-meta div {
+            text-align: center;
+        }
+
+        .order-meta label {
+            font-size: 0.75rem;
+            color: #6b7280;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .order-meta span {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .order-total {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .header-actions span {
+                display: none;
+            }
+
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+            }
+
+            .order-details {
+                flex-direction: column;
+                gap: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="customer_dashboard.html" class="logo">
+                <i class="fas fa-pills"></i>
+                <span>PharmaCare</span>
+            </a>
+            <div class="header-actions">
+                <a href="customer_store.html" style="text-decoration: none; color: #10b981; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-store"></i> Store
+                </a>
+                <div class="user-menu" id="logoutBtn">
+                    <img id="headerAvatar" src="" alt="User">
+                    <span id="headerName">Loading...</span>
+                    <i class="fas fa-sign-out-alt" style="color: #6b7280;"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+            <h1 id="welcomeName">Welcome!</h1>
+            <p>Manage your orders and account information</p>
+            <a href="customer_store.html" class="btn btn-primary" style="margin-top: 16px; display: inline-flex;">
+                <i class="fas fa-shopping-bag"></i> Shop Now
+            </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Orders</h3>
+                <p id="statOrders">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Spent</h3>
+                <p id="statSpent">৳0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Prescriptions</h3>
+                <p id="statPrescriptions">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Member Since</h3>
+                <p id="statMember">-</p>
+            </div>
+        </div>
+
+        <!-- Two Column Layout -->
+        <div class="two-column">
+            <!-- Profile Card -->
+            <div class="profile-card">
+                <img id="profileAvatar" src="" alt="Profile" class="profile-avatar">
+                <h2 id="profileName">Loading...</h2>
+                <p id="profileEmail">...</p>
+                <p id="profilePhone" style="margin-top: 4px;">...</p>
+                
+                <div class="profile-actions">
+                    <a href="customer_store.html" class="btn btn-primary" style="background: linear-gradient(135deg, #10b981, #059669);">
+                        <i class="fas fa-shopping-bag"></i> Shop Now
+                    </a>
+                    <a href="customer_profile.html" class="btn btn-outline">
+                        <i class="fas fa-user-edit"></i> Edit Profile
+                    </a>
+                    <a href="customer_orders.html" class="btn btn-outline">
+                        <i class="fas fa-list-alt"></i> View All Orders
+                    </a>
+                    <button class="btn btn-danger" id="logoutBtn2">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+
+            <!-- Recent Orders -->
+            <div class="orders-section">
+                <h2><i class="fas fa-clock"></i> Recent Orders</h2>
+                <div id="ordersList">
+                    <div class="empty-orders">
+                        <i class="fas fa-shopping-bag"></i>
+                        <p>No orders yet</p>
+                        <span>Your recent orders will appear here</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'api/';
+
+        // Check authentication
+        const customerStr = sessionStorage.getItem('customer');
+        if (!customerStr) {
+            window.location.href = 'customer_login.html';
+        }
+        const customer = JSON.parse(customerStr);
+
+        // Display customer info
+        function displayCustomerInfo() {
+            const fullName = `${customer.first_name} ${customer.last_name}`;
+            
+            document.getElementById('welcomeName').textContent = `Welcome, ${customer.first_name}!`;
+            document.getElementById('headerName').textContent = fullName;
+            document.getElementById('headerAvatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=10b981&color=fff`;
+            
+            document.getElementById('profileName').textContent = fullName;
+            document.getElementById('profileEmail').textContent = customer.email;
+            document.getElementById('profilePhone').textContent = customer.phone || 'No phone number';
+            document.getElementById('profileAvatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(fullName)}&background=10b981&color=fff&size=256`;
+            
+            // Member since
+            if (customer.created_at) {
+                const date = new Date(customer.created_at);
+                document.getElementById('statMember').textContent = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+            }
+        }
+
+        // Load customer orders
+        async function loadOrders() {
+            try {
+                const response = await fetch(API_URL + 'customer_auth.php?action=orders');
+                const result = await response.json();
+                
+                if (result.success && result.data.length > 0) {
+                    const orders = result.data;
+                    
+                    // Update stats
+                    document.getElementById('statOrders').textContent = orders.length;
+                    const totalSpent = orders.reduce((sum, o) => sum + parseFloat(o.total_amount), 0);
+                    document.getElementById('statSpent').textContent = '৳' + totalSpent.toFixed(2);
+                    
+                    // Display recent orders (last 5)
+                    const recentOrders = orders.slice(0, 5);
+                    const ordersHtml = recentOrders.map(order => {
+                        let statusClass = 'status-completed';
+                        let statusText = 'Completed';
+                        if (order.payment_status === 'pending_delivery') {
+                            statusClass = 'status-delivery';
+                            statusText = 'Out for Delivery';
+                        } else if (order.payment_status === 'pending') {
+                            statusClass = 'status-pending';
+                            statusText = 'Pending';
+                        }
+                        
+                        const date = new Date(order.sale_date).toLocaleDateString();
+                        
+                        return `
+                            <div class="order-item">
+                                <div class="order-header">
+                                    <div class="order-info">
+                                        <h4>Order #${order.invoice_number}</h4>
+                                        <span>${date}</span>
+                                    </div>
+                                    <span class="order-status ${statusClass}">${statusText}</span>
+                                </div>
+                                <div class="order-details">
+                                    <div class="order-meta">
+                                        <div>
+                                            <label>Items</label>
+                                            <span>${order.item_count || 0}</span>
+                                        </div>
+                                        <div>
+                                            <label>Payment</label>
+                                            <span style="text-transform: uppercase;">${order.payment_method}</span>
+                                        </div>
+                                    </div>
+                                    <div class="order-total">৳${parseFloat(order.total_amount).toFixed(2)}</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    document.getElementById('ordersList').innerHTML = ordersHtml;
+                }
+            } catch (error) {
+                console.error('Failed to load orders:', error);
+            }
+        }
+
+        // Logout
+        async function logout() {
+            try {
+                await fetch(API_URL + 'customer_auth.php?action=logout');
+            } catch (error) {
+                console.error('Logout error:', error);
+            } finally {
+                sessionStorage.removeItem('customer');
+                sessionStorage.removeItem('user_type');
+                window.location.href = 'customer_login.html';
+            }
+        }
+
+        document.getElementById('logoutBtn').addEventListener('click', logout);
+        document.getElementById('logoutBtn2').addEventListener('click', logout);
+
+        // Initialize
+        displayCustomerInfo();
+        loadOrders();
+    </script>
+</body>
+</html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - PharmaCare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .profile-header {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .profile-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            margin-bottom: 20px;
+        }
+        
+        .profile-header h2 {
+            font-size: 1.75rem;
+            margin-bottom: 8px;
+        }
+        
+        .profile-role {
+            background: rgba(255,255,255,0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            text-transform: capitalize;
+        }
+        
+        .profile-section {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .profile-section h3 {
+            font-size: 1.25rem;
+            margin-bottom: 24px;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 0.875rem;
+            transition: all 0.2s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #0ea5e9;
+        }
+        
+        .form-group input:disabled {
+            background: #f3f4f6;
+            cursor: not-allowed;
+        }
+        
+        .btn-save {
+            background: linear-gradient(135deg, #0ea5e9, #0284c7);
+            color: white;
+            padding: 12px 32px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.4);
+        }
+        
+        .btn-password {
+            background: #f3f4f6;
+            color: #374151;
+            padding: 12px 32px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-left: 12px;
+        }
+        
+        .activity-list {
+            list-style: none;
+        }
+        
+        .activity-item {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px 0;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+        
+        .activity-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+        
+        .activity-icon.login { background: #dcfce7; color: #16a34a; }
+        .activity-icon.purchase { background: #dbeafe; color: #2563eb; }
+        .activity-icon.update { background: #fef3c7; color: #d97706; }
+        
+        .activity-content p {
+            font-weight: 500;
+            color: #1e293b;
+        }
+        
+        .activity-content span {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+        
+        .stats-grid-profile {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-box {
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .stat-box h4 {
+            font-size: 2rem;
+            color: #0ea5e9;
+            margin-bottom: 8px;
+        }
+        
+        .stat-box p {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid-profile {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-pills"></i>
+                    <span>PharmaCare</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="index.html#dashboard">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="index.html#medicines">
+                            <i class="fas fa-capsules"></i>
+                            <span>Medicines</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="index.html#sales">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>Sales / POS</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info-sidebar">
+                    <img id="userAvatar" src="" alt="User">
+                    <div>
+                        <p id="userName">Loading...</p>
+                        <span id="userRole">...</span>
+                    </div>
+                </div>
+                <a href="#" class="logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="header-left">
+                    <h2 class="page-title">My Profile</h2>
+                </div>
+                <div class="header-right">
+                    <a href="index.html" class="btn btn-outline">
+                        <i class="fas fa-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+            </header>
+
+            <div class="profile-container">
+                <!-- Stats -->
+                <div class="stats-grid-profile">
+                    <div class="stat-box">
+                        <h4 id="totalOrders">0</h4>
+                        <p>Total Orders</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4 id="totalSpent">৳0</h4>
+                        <p>Total Spent</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4 id="memberSince">-</h4>
+                        <p>Member Since</p>
+                    </div>
+                </div>
+
+                <!-- Profile Header -->
+                <div class="profile-header">
+                    <img id="profileAvatar" src="" alt="Profile" class="profile-avatar">
+                    <h2 id="profileName">Loading...</h2>
+                    <span class="profile-role" id="profileRole">...</span>
+                </div>
+
+                <!-- Profile Information -->
+                <div class="profile-section">
+                    <h3><i class="fas fa-user-circle"></i> Personal Information</h3>
+                    <form id="profileForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Full Name</label>
+                                <input type="text" id="fullName" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input type="text" id="username" disabled>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Role</label>
+                                <input type="text" id="role" disabled>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-save">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Change Password -->
+                <div class="profile-section">
+                    <h3><i class="fas fa-lock"></i> Change Password</h3>
+                    <form id="passwordForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Current Password</label>
+                                <input type="password" id="currentPassword" required>
+                            </div>
+                            <div class="form-group">
+                                <label>New Password</label>
+                                <input type="password" id="newPassword" required minlength="6">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Confirm New Password</label>
+                                <input type="password" id="confirmPassword" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-save">
+                            <i class="fas fa-key"></i> Update Password
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="profile-section">
+                    <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                    <ul class="activity-list" id="activityList">
+                        <li class="activity-item">
+                            <div class="activity-icon login">
+                                <i class="fas fa-sign-in-alt"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p>Last login</p>
+                                <span id="lastLogin">Just now</span>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const API_URL = 'api/';
+
+        // Check authentication
+        const userStr = sessionStorage.getItem('user');
+        if (!userStr) {
+            window.location.href = 'login.html';
+        }
+        const user = JSON.parse(userStr);
+
+        // Display user info
+        function displayUserInfo() {
+            document.getElementById('userName').textContent = user.full_name || user.username;
+            document.getElementById('userRole').textContent = user.role;
+            document.getElementById('userAvatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name || user.username)}&background=0ea5e9&color=fff`;
+            
+            document.getElementById('profileName').textContent = user.full_name || user.username;
+            document.getElementById('profileRole').textContent = user.role;
+            document.getElementById('profileAvatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name || user.username)}&background=0ea5e9&color=fff&size=256`;
+            
+            // Fill form
+            document.getElementById('fullName').value = user.full_name || '';
+            document.getElementById('username').value = user.username || '';
+            document.getElementById('email').value = user.email || '';
+            document.getElementById('role').value = user.role || '';
+        }
+
+        // Load user stats
+        async function loadUserStats() {
+            try {
+                const response = await fetch(API_URL + 'auth.php?action=stats&user_id=' + user.id);
+                const result = await response.json();
+                
+                if (result.success) {
+                    document.getElementById('totalOrders').textContent = result.data.total_orders || 0;
+                    document.getElementById('totalSpent').textContent = '৳' + (result.data.total_spent || 0);
+                    document.getElementById('memberSince').textContent = new Date(result.data.created_at).toLocaleDateString();
+                }
+            } catch (error) {
+                console.error('Failed to load stats:', error);
+            }
+        }
+
+        // Update profile
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const data = {
+                id: user.id,
+                full_name: document.getElementById('fullName').value,
+                email: document.getElementById('email').value
+            };
+            
+            try {
+                const response = await fetch(API_URL + 'auth.php?action=update', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Update session
+                    user.full_name = data.full_name;
+                    user.email = data.email;
+                    sessionStorage.setItem('user', JSON.stringify(user));
+                    
+                    alert('Profile updated successfully!');
+                    displayUserInfo();
+                } else {
+                    alert(result.message || 'Failed to update profile');
+                }
+            } catch (error) {
+                alert('Connection error. Please try again.');
+            }
+        });
+
+        // Change password
+        document.getElementById('passwordForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const newPass = document.getElementById('newPassword').value;
+            const confirmPass = document.getElementById('confirmPassword').value;
+            
+            if (newPass !== confirmPass) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            const data = {
+                id: user.id,
+                current_password: document.getElementById('currentPassword').value,
+                password: newPass
+            };
+            
+            try {
+                const response = await fetch(API_URL + 'auth.php?action=update', {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Password updated successfully!');
+                    document.getElementById('passwordForm').reset();
+                } else {
+                    alert(result.message || 'Failed to update password');
+                }
+            } catch (error) {
+                alert('Connection error. Please try again.');
+            }
+        });
+
+        // Logout
+        document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+            e.preventDefault();
+            await fetch(API_URL + 'auth.php?action=logout');
+            sessionStorage.removeItem('user');
+            window.location.href = 'login.html';
+        });
+
+        // Initialize
+        displayUserInfo();
+        loadUserStats();
+    </script>
+</body>
+</html>

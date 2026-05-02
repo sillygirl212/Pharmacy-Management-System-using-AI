@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders - PharmaCare</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .back-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #6b7280;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #10b981;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .logo i {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+        }
+
+        .logo span {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .page-header h1 {
+            font-size: 1.75rem;
+            color: #1e293b;
+        }
+
+        /* Stats Summary */
+        .stats-summary {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .stat-box {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .stat-box h4 {
+            font-size: 1.75rem;
+            color: #10b981;
+            margin-bottom: 4px;
+        }
+
+        .stat-box p {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        /* Orders List */
+        .orders-container {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .orders-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .orders-header h2 {
+            font-size: 1.25rem;
+            color: #1e293b;
+        }
+
+        .filter-select {
+            padding: 8px 16px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            background: white;
+        }
+
+        .order-card {
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .order-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .order-header {
+            background: #f8fafc;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .order-header:hover {
+            background: #f1f5f9;
+        }
+
+        .order-info h4 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+            color: #1e293b;
+        }
+
+        .order-info span {
+            font-size: 0.875rem;
+            color: #6b7280;
+        }
+
+        .order-status {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-completed {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .status-pending {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-delivery {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .order-summary {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .order-summary div {
+            text-align: center;
+        }
+
+        .order-summary label {
+            display: block;
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-bottom: 4px;
+        }
+
+        .order-summary span {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .order-total {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .order-details {
+            padding: 20px;
+            border-top: 1px solid #e5e7eb;
+            display: none;
+        }
+
+        .order-details.show {
+            display: block;
+        }
+
+        .items-list {
+            margin-bottom: 20px;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        .item-row:last-child {
+            border-bottom: none;
+        }
+
+        .item-info h5 {
+            font-size: 0.875rem;
+            color: #374151;
+        }
+
+        .item-info span {
+            font-size: 0.75rem;
+            color: #6b7280;
+        }
+
+        .item-price {
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .order-totals {
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            font-size: 0.875rem;
+        }
+
+        .total-row.grand-total {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: #10b981;
+            border-top: 1px solid #e5e7eb;
+            margin-top: 8px;
+            padding-top: 16px;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 64px;
+            color: #6b7280;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            color: #d1d5db;
+        }
+
+        .empty-state h3 {
+            font-size: 1.25rem;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .stats-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .orders-header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
+
+            .order-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+
+            .order-summary {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .order-summary div {
+                text-align: left;
+            }
+
+            .page-header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="customer_store.html" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+                Back to Store
+            </a>
+            <a href="customer_store.html" class="logo">
+                <i class="fas fa-pills"></i>
+                <span>PharmaCare</span>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="page-header">
+            <h1>My Orders</h1>
+        </div>
+
+        <!-- Stats Summary -->
+        <div class="stats-summary">
+            <div class="stat-box">
+                <h4 id="totalOrders">0</h4>
+                <p>Total Orders</p>
+            </div>
+            <div class="stat-box">
+                <h4 id="totalSpent">৳0</h4>
+                <p>Total Spent</p>
+            </div>
+            <div class="stat-box">
+                <h4 id="completedOrders">0</h4>
+                <p>Completed</p>
+            </div>
+        </div>
+
+        <!-- Orders List -->
+        <div class="orders-container">
+            <div class="orders-header">
+                <h2>Order History</h2>
+                <select class="filter-select" id="filterStatus">
+                    <option value="all">All Orders</option>
+                    <option value="completed">Completed</option>
+                    <option value="pending">Pending</option>
+                    <option value="delivery">Out for Delivery</option>
+                </select>
+            </div>
+
+            <div id="ordersList">
+                <div class="empty-state">
+                    <i class="fas fa-shopping-bag"></i>
+                    <h3>No orders yet</h3>
+                    <p>Your order history will appear here once you make a purchase</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'api/';
+        let allOrders = [];
+
+        // Check authentication
+        const customerStr = sessionStorage.getItem('customer');
+        if (!customerStr) {
+            window.location.href = 'customer_login.html';
+        }
+        const customer = JSON.parse(customerStr);
+
+        // Load orders
+        async function loadOrders() {
+            try {
+                const response = await fetch(API_URL + 'customer_auth.php?action=orders');
+                const result = await response.json();
+                
+                if (result.success) {
+                    allOrders = result.data;
+                    displayOrders(allOrders);
+                    updateStats(allOrders);
+                }
+            } catch (error) {
+                console.error('Failed to load orders:', error);
+            }
+        }
+
+        // Update statistics
+        function updateStats(orders) {
+            document.getElementById('totalOrders').textContent = orders.length;
+            
+            const totalSpent = orders.reduce((sum, o) => sum + parseFloat(o.total_amount), 0);
+            document.getElementById('totalSpent').textContent = '৳' + totalSpent.toFixed(2);
+            
+            const completed = orders.filter(o => o.payment_status === 'completed').length;
+            document.getElementById('completedOrders').textContent = completed;
+        }
+
+        // Display orders
+        function displayOrders(orders) {
+            if (orders.length === 0) {
+                document.getElementById('ordersList').innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-shopping-bag"></i>
+                        <h3>No orders yet</h3>
+                        <p>Your order history will appear here once you make a purchase</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const ordersHtml = orders.map(order => {
+                let statusClass = 'status-completed';
+                let statusText = 'Completed';
+                if (order.payment_status === 'pending_delivery') {
+                    statusClass = 'status-delivery';
+                    statusText = 'Out for Delivery';
+                } else if (order.payment_status === 'pending') {
+                    statusClass = 'status-pending';
+                    statusText = 'Pending';
+                }
+
+                const date = new Date(order.sale_date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+
+                return `
+                    <div class="order-card" data-order-id="${order.id}">
+                        <div class="order-header" onclick="toggleOrder(${order.id})">
+                            <div class="order-info">
+                                <h4>Order #${order.invoice_number}</h4>
+                                <span>${date}</span>
+                            </div>
+                            <div class="order-summary">
+                                <div>
+                                    <label>Items</label>
+                                    <span>${order.item_count || 0}</span>
+                                </div>
+                                <div>
+                                    <label>Payment</label>
+                                    <span style="text-transform: uppercase;">${order.payment_method}</span>
+                                </div>
+                                <div class="order-total">৳${parseFloat(order.total_amount).toFixed(2)}</div>
+                            </div>
+                            <span class="order-status ${statusClass}">${statusText}</span>
+                        </div>
+                        <div class="order-details" id="details-${order.id}">
+                            <div class="items-list" id="items-${order.id}">
+                                <p>Loading items...</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('ordersList').innerHTML = ordersHtml;
+        }
+
+        // Toggle order details
+        async function toggleOrder(orderId) {
+            const detailsDiv = document.getElementById(`details-${orderId}`);
+            const isVisible = detailsDiv.classList.contains('show');
+            
+            // Hide all other details
+            document.querySelectorAll('.order-details').forEach(d => d.classList.remove('show'));
+            
+            if (!isVisible) {
+                detailsDiv.classList.add('show');
+                
+                // Load order details if not already loaded
+                const itemsDiv = document.getElementById(`items-${orderId}`);
+                if (itemsDiv.innerHTML === '<p>Loading items...</p>') {
+                    try {
+                        const response = await fetch(API_URL + 'customer_auth.php?action=order_details&order_id=' + orderId);
+                        const result = await response.json();
+                        
+                        if (result.success && result.data.items) {
+                            const items = result.data.items;
+                            const itemsHtml = items.map(item => `
+                                <div class="item-row">
+                                    <div class="item-info">
+                                        <h5>${item.medicine_name || 'Unknown Item'}</h5>
+                                        <span>${item.quantity} x ৳${parseFloat(item.unit_price).toFixed(2)}</span>
+                                    </div>
+                                    <div class="item-price">৳${parseFloat(item.total_price).toFixed(2)}</div>
+                                </div>
+                            `).join('');
+                            
+                            const order = result.data;
+                            itemsDiv.innerHTML = `
+                                ${itemsHtml}
+                                <div class="order-totals">
+                                    <div class="total-row">
+                                        <span>Subtotal</span>
+                                        <span>৳${parseFloat(order.subtotal).toFixed(2)}</span>
+                                    </div>
+                                    <div class="total-row">
+                                        <span>Tax</span>
+                                        <span>৳${parseFloat(order.tax_amount).toFixed(2)}</span>
+                                    </div>
+                                    ${order.discount_amount > 0 ? `
+                                    <div class="total-row">
+                                        <span>Discount</span>
+                                        <span>-৳${parseFloat(order.discount_amount).toFixed(2)}</span>
+                                    </div>
+                                    ` : ''}
+                                    <div class="total-row grand-total">
+                                        <span>Total</span>
+                                        <span>৳${parseFloat(order.total_amount).toFixed(2)}</span>
+                                    </div>
+                                </div>
+                                ${order.payment_phone ? `
+                                <div style="margin-top: 16px; padding: 12px; background: #f0fdf4; border-radius: 8px;">
+                                    <p style="font-size: 0.875rem; color: #059669;">
+                                        <i class="fas fa-mobile-alt"></i> 
+                                        Paid via ${order.payment_method.toUpperCase()}: ${order.payment_phone}
+                                    </p>
+                                </div>
+                                ` : ''}
+                            `;
+                        }
+                    } catch (error) {
+                        itemsDiv.innerHTML = '<p style="color: #dc2626;">Failed to load order details</p>';
+                    }
+                }
+            }
+        }
+
+        // Filter orders
+        document.getElementById('filterStatus').addEventListener('change', (e) => {
+            const filter = e.target.value;
+            
+            if (filter === 'all') {
+                displayOrders(allOrders);
+            } else {
+                const filtered = allOrders.filter(order => {
+                    if (filter === 'completed') return order.payment_status === 'completed';
+                    if (filter === 'pending') return order.payment_status === 'pending';
+                    if (filter === 'delivery') return order.payment_status === 'pending_delivery';
+                    return true;
+                });
+                displayOrders(filtered);
+            }
+        });
+
+        // Initialize
+        loadOrders();
+    </script>
+</body>
+</html>

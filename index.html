@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PharmaCare - Pharmacy Management System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-pills"></i>
+                    <span>PharmaCare</span>
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="admin-only">
+                        <a href="#dashboard" data-page="dashboard">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="#home" data-page="home">
+                            <i class="fas fa-store"></i>
+                            <span>Home</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#customers" data-page="customers">
+                            <i class="fas fa-users"></i>
+                            <span>Customers</span>
+                        </a>
+                    </li>
+                    <li class="admin-only">
+                        <a href="#suppliers" data-page="suppliers">
+                            <i class="fas fa-truck"></i>
+                            <span>Suppliers</span>
+                        </a>
+                    </li>
+                    <li class="admin-only">
+                        <a href="#inventory" data-page="inventory">
+                            <i class="fas fa-boxes"></i>
+                            <span>Inventory</span>
+                        </a>
+                    </li>
+                    <li class="admin-only">
+                        <a href="#reports" data-page="reports">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Reports</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info-sidebar">
+                    <img id="userAvatar" src="https://ui-avatars.com/api/?name=Admin+User&background=0ea5e9&color=fff" alt="User">
+                    <div>
+                        <p id="userName">Admin</p>
+                        <span id="userRole">admin</span>
+                    </div>
+                </div>
+                <a href="profile.html">
+                    <i class="fas fa-user-circle"></i>
+                    <span>My Profile</span>
+                </a>
+                <a href="#settings" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <a href="#" class="logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Header -->
+            <header class="top-header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h2 class="page-title">Dashboard</h2>
+                </div>
+                <div class="header-right">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search...">
+                    </div>
+                    <div class="notifications">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">0</span>
+                    </div>
+                    <div class="user-profile" id="headerUserProfile">
+                        <img id="headerAvatar" src="https://ui-avatars.com/api/?name=Admin&background=0ea5e9&color=fff" alt="Admin">
+                        <span id="headerUserName">Admin</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Page -->
+            <div class="page" id="dashboard-page">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Sales</h3>
+                            <p class="stat-value">৳12,450</p>
+                            <span class="stat-change positive">+12% from last month</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i class="fas fa-capsules"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Medicines</h3>
+                            <p class="stat-value">1,284</p>
+                            <span class="stat-change positive">+5% from last month</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Low Stock Items</h3>
+                            <p class="stat-value">23</p>
+                            <span class="stat-change negative">Requires attention</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-info">
+                            <h3>Total Customers</h3>
+                            <p class="stat-value">856</p>
+                            <span class="stat-change positive">+8% from last month</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card chart-card">
+                        <div class="card-header">
+                            <h3>Sales Overview</h3>
+                            <select class="form-select">
+                                <option>This Week</option>
+                                <option>This Month</option>
+                                <option>This Year</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="salesChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Recent Sales</h3>
+                            <a href="#sales" class="view-all">View All</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Invoice #</th>
+                                        <th>Customer</th>
+                                        <th>Amount</th>
+                                        <th>Date</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>#INV-001</td>
+                                        <td>John Smith</td>
+                                        <td>৳125.00</td>
+                                        <td>2026-05-01</td>
+                                        <td><span class="badge-status success">Completed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>#INV-002</td>
+                                        <td>Sarah Johnson</td>
+                                        <td>৳78.50</td>
+                                        <td>2026-05-01</td>
+                                        <td><span class="badge-status success">Completed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>#INV-003</td>
+                                        <td>Mike Brown</td>
+                                        <td>৳245.00</td>
+                                        <td>2026-04-30</td>
+                                        <td><span class="badge-status pending">Pending</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>#INV-004</td>
+                                        <td>Emily Davis</td>
+                                        <td>৳56.00</td>
+                                        <td>2026-04-30</td>
+                                        <td><span class="badge-status success">Completed</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Low Stock Alert</h3>
+                            <a href="#inventory" class="view-all">View All</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Medicine</th>
+                                        <th>Category</th>
+                                        <th>Stock</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Paracetamol 500mg</td>
+                                        <td>Pain Relief</td>
+                                        <td><span class="stock-low">5 units</span></td>
+                                        <td><button class="btn btn-sm btn-primary">Restock</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Amoxicillin 250mg</td>
+                                        <td>Antibiotics</td>
+                                        <td><span class="stock-low">3 units</span></td>
+                                        <td><button class="btn btn-sm btn-primary">Restock</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Vitamin C 1000mg</td>
+                                        <td>Vitamins</td>
+                                        <td><span class="stock-medium">12 units</span></td>
+                                        <td><button class="btn btn-sm btn-outline">Order</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Expiring Soon</h3>
+                            <a href="#medicines" class="view-all">View All</a>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Medicine</th>
+                                        <th>Batch</th>
+                                        <th>Expiry Date</th>
+                                        <th>Days Left</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Ibuprofen 400mg</td>
+                                        <td>BATCH-001</td>
+                                        <td>2026-06-15</td>
+                                        <td><span class="expiry-danger">45 days</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cetirizine 10mg</td>
+                                        <td>BATCH-002</td>
+                                        <td>2026-07-20</td>
+                                        <td><span class="expiry-warning">80 days</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Omeprazole 20mg</td>
+                                        <td>BATCH-003</td>
+                                        <td>2026-08-10</td>
+                                        <td><span class="expiry-warning">101 days</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Home Page - Default active page with all products -->
+            <div class="page active" id="home-page">
+                <div class="page-header">
+                    <h2>All Products</h2>
+                    <p>Manage your medicine inventory</p>
+                </div>
+                <div class="page-actions">
+                    <div class="search-filter">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search medicines..." id="homeSearch">
+                        </div>
+                        <div class="category-tabs">
+                            <button class="tab active">All</button>
+                            <button class="tab">Pain Relief</button>
+                            <button class="tab">Antibiotics</button>
+                            <button class="tab">Vitamins</button>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary admin-only" id="addProductBtn">
+                        <i class="fas fa-plus"></i> Add Product
+                    </button>
+                </div>
+                <div class="products-grid-home" id="productsGrid">
+                    <!-- Products will be loaded here by JavaScript -->
+                    <div class="empty-state">
+                        <i class="fas fa-box-open"></i>
+                        <h3>Loading Products...</h3>
+                        <p>Please wait while we load your inventory</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sales/POS Page - Hidden from menu, available via direct URL -->
+            <div class="page" id="sales-page" data-version="2">
+                <div class="page-actions">
+                    <div class="search-filter">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search medicines..." id="posSearch">
+                        </div>
+                        <div class="category-tabs">
+                            <button class="tab active">All</button>
+                            <button class="tab">Pain Relief</button>
+                            <button class="tab">Antibiotics</button>
+                            <button class="tab">Vitamins</button>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary admin-only" id="addProductBtn">
+                        <i class="fas fa-plus"></i> Add Product
+                    </button>
+                </div>
+                <div class="products-grid-home" id="productsGrid">
+                    <div class="product-card-detailed" data-id="1">
+                        <div class="product-icon-large">
+                            <i class="fas fa-pills"></i>
+                        </div>
+                        <div class="product-content">
+                            <h4>Paracetamol 500mg</h4>
+                            <p class="product-description">Pain relief and fever reducer. Safe for all ages.</p>
+                            <div class="product-meta">
+                                <span class="product-price">৳5.99</span>
+                                <span class="product-stock">150 in stock</span>
+                            </div>
+                            <div class="product-actions admin-only">
+                                <button class="btn-icon" title="Edit"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon" title="Delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card-detailed" data-id="2">
+                        <div class="product-icon-large">
+                            <i class="fas fa-capsules"></i>
+                        </div>
+                        <div class="product-content">
+                            <h4>Amoxicillin 250mg</h4>
+                            <p class="product-description">Broad-spectrum antibiotic for bacterial infections.</p>
+                            <div class="product-meta">
+                                <span class="product-price">৳12.50</span>
+                                <span class="product-stock low">3 in stock</span>
+                            </div>
+                            <div class="product-actions admin-only">
+                                <button class="btn-icon" title="Edit"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon" title="Delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card-detailed" data-id="3">
+                        <div class="product-icon-large">
+                            <i class="fas fa-tablets"></i>
+                        </div>
+                        <div class="product-content">
+                            <h4>Vitamin C 1000mg</h4>
+                            <p class="product-description">Immune system support and antioxidant supplement.</p>
+                            <div class="product-meta">
+                                <span class="product-price">৳8.99</span>
+                                <span class="product-stock">45 in stock</span>
+                            </div>
+                            <div class="product-actions admin-only">
+                                <button class="btn-icon" title="Edit"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon" title="Delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card-detailed" data-id="4">
+                        <div class="product-icon-large">
+                            <i class="fas fa-prescription-bottle"></i>
+                        </div>
+                        <div class="product-content">
+                            <h4>Cetirizine 10mg</h4>
+                            <p class="product-description">Antihistamine for allergy relief and hay fever.</p>
+                            <div class="product-meta">
+                                <span class="product-price">৳7.25</span>
+                                <span class="product-stock">89 in stock</span>
+                            </div>
+                            <div class="product-actions admin-only">
+                                <button class="btn-icon" title="Edit"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon" title="Delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card-detailed" data-id="5">
+                        <div class="product-icon-large">
+                            <i class="fas fa-pills"></i>
+                        </div>
+                        <div class="product-content">
+                            <h4>Ibuprofen 400mg</h4>
+                            <p class="product-description">Anti-inflammatory pain reliever and fever reducer.</p>
+                            <div class="product-meta">
+                                <span class="product-price">৳6.50</span>
+                                <span class="product-stock">200 in stock</span>
+                            </div>
+                            <div class="product-actions admin-only">
+                                <button class="btn-icon" title="Edit"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon" title="Delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="product-card-detailed" data-id="6">
+                        <div class="product-icon-large">
+                            <i class="fas fa-capsules"></i>
+                        </div>
+                        <div class="product-content">
+                            <h4>Omeprazole 20mg</h4>
+                            <p class="product-description">Proton pump inhibitor for acid reflux and heartburn.</p>
+                            <div class="product-meta">
+                                <span class="product-price">৳9.99</span>
+                                <span class="product-stock">67 in stock</span>
+                            </div>
+                            <div class="product-actions admin-only">
+                                <button class="btn-icon" title="Edit"><i class="fas fa-edit"></i></button>
+                                <button class="btn-icon" title="Delete"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customers Page -->
+            <div class="page" id="customers-page">
+                <div class="page-actions">
+                    <div class="search-filter">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search customers...">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary admin-only" id="addCustomerBtn">
+                        <i class="fas fa-plus"></i> Add Customer
+                    </button>
+                </div>
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" class="select-all">
+                                    </th>
+                                    <th>Customer</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Total Purchases</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>
+                                        <div class="customer-info">
+                                            <img src="https://ui-avatars.com/api/?name=John+Smith&background=0ea5e9&color=fff" alt="John Smith">
+                                            <div>
+                                                <p class="customer-name">John Smith</p>
+                                                <span class="customer-id">CUST-001</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>john.smith@email.com</td>
+                                    <td>+1 555-0123</td>
+                                    <td>৳1,250.00</td>
+                                    <td><span class="badge-status success">Active</span></td>
+                                    <td>
+                                        <button class="btn-icon admin-only" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon admin-only" title="Delete"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>
+                                        <div class="customer-info">
+                                            <img src="https://ui-avatars.com/api/?name=Sarah+Johnson&background=10b981&color=fff" alt="Sarah Johnson">
+                                            <div>
+                                                <p class="customer-name">Sarah Johnson</p>
+                                                <span class="customer-id">CUST-002</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>sarah.j@email.com</td>
+                                    <td>+1 555-0124</td>
+                                    <td>৳890.50</td>
+                                    <td><span class="badge-status success">Active</span></td>
+                                    <td>
+                                        <button class="btn-icon admin-only" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon admin-only" title="Delete"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>
+                                        <div class="customer-info">
+                                            <img src="https://ui-avatars.com/api/?name=Mike+Brown&background=f59e0b&color=fff" alt="Mike Brown">
+                                            <div>
+                                                <p class="customer-name">Mike Brown</p>
+                                                <span class="customer-id">CUST-003</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>mike.brown@email.com</td>
+                                    <td>+1 555-0125</td>
+                                    <td>৳2,150.00</td>
+                                    <td><span class="badge-status success">Active</span></td>
+                                    <td>
+                                        <button class="btn-icon admin-only" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon admin-only" title="Delete"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Suppliers Page -->
+            <div class="page" id="suppliers-page">
+                <div class="page-actions">
+                    <div class="search-filter">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search suppliers...">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary admin-only" id="addSupplierBtn">
+                        <i class="fas fa-plus"></i> Add Supplier
+                    </button>
+                </div>
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" class="select-all">
+                                    </th>
+                                    <th>Supplier</th>
+                                    <th>Contact Person</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>
+                                        <div class="supplier-info">
+                                            <div class="supplier-icon">
+                                                <i class="fas fa-building"></i>
+                                            </div>
+                                            <div>
+                                                <p class="supplier-name">MediPharm Inc.</p>
+                                                <span class="supplier-id">SUP-001</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Robert Wilson</td>
+                                    <td>orders@medipharm.com</td>
+                                    <td>+1 555-0201</td>
+                                    <td><span class="badge-status success">Active</span></td>
+                                    <td>
+                                        <button class="btn-icon admin-only" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon admin-only" title="Delete"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>
+                                        <div class="supplier-info">
+                                            <div class="supplier-icon">
+                                                <i class="fas fa-building"></i>
+                                            </div>
+                                            <div>
+                                                <p class="supplier-name">Global Health Supplies</p>
+                                                <span class="supplier-id">SUP-002</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Emily Chen</td>
+                                    <td>sales@globalhealth.com</td>
+                                    <td>+1 555-0202</td>
+                                    <td><span class="badge-status success">Active</span></td>
+                                    <td>
+                                        <button class="btn-icon admin-only" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon admin-only" title="Delete"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox"></td>
+                                    <td>
+                                        <div class="supplier-info">
+                                            <div class="supplier-icon">
+                                                <i class="fas fa-building"></i>
+                                            </div>
+                                            <div>
+                                                <p class="supplier-name">PharmaDirect Ltd.</p>
+                                                <span class="supplier-id">SUP-003</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>David Martinez</td>
+                                    <td>contact@pharmadirect.com</td>
+                                    <td>+1 555-0203</td>
+                                    <td><span class="badge-status warning">Pending</span></td>
+                                    <td>
+                                        <button class="btn-icon admin-only" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-icon admin-only" title="Delete"><i class="fas fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory Page -->
+            <div class="page" id="inventory-page">
+                <div class="page-actions">
+                    <div class="search-filter">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" placeholder="Search inventory...">
+                        </div>
+                        <select class="form-select">
+                            <option>All Stock Levels</option>
+                            <option>Low Stock</option>
+                            <option>Out of Stock</option>
+                            <option>High Stock</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-file-export"></i> Export
+                    </button>
+                </div>
+                <div class="card">
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Medicine</th>
+                                    <th>Batch #</th>
+                                    <th>Stock In</th>
+                                    <th>Stock Out</th>
+                                    <th>Current Stock</th>
+                                    <th>Expiry Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Paracetamol 500mg</td>
+                                    <td>BATCH-2026-A1</td>
+                                    <td>500</td>
+                                    <td>350</td>
+                                    <td><span class="stock-badge high">150</span></td>
+                                    <td>2027-12-31</td>
+                                    <td><span class="badge-status success">OK</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Amoxicillin 250mg</td>
+                                    <td>BATCH-2026-B2</td>
+                                    <td>100</td>
+                                    <td>97</td>
+                                    <td><span class="stock-badge low">3</span></td>
+                                    <td>2026-11-30</td>
+                                    <td><span class="badge-status danger">Critical</span></td>
+                                </tr>
+                                <tr>
+                                    <td>Vitamin C 1000mg</td>
+                                    <td>BATCH-2026-C3</td>
+                                    <td>200</td>
+                                    <td>155</td>
+                                    <td><span class="stock-badge medium">45</span></td>
+                                    <td>2027-06-30</td>
+                                    <td><span class="badge-status warning">Low</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Page -->
+            <div class="page" id="reports-page">
+                <div class="reports-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Sales Report</h3>
+                        </div>
+                        <div class="report-summary">
+                            <div class="report-stat">
+                                <span class="label">Total Sales</span>
+                                <span class="value">৳45,250</span>
+                            </div>
+                            <div class="report-stat">
+                                <span class="label">Orders</span>
+                                <span class="value">1,234</span>
+                            </div>
+                            <div class="report-stat">
+                                <span class="label">Average Order</span>
+                                <span class="value">৳36.68</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline btn-block">Generate Report</button>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Inventory Report</h3>
+                        </div>
+                        <div class="report-summary">
+                            <div class="report-stat">
+                                <span class="label">Total Items</span>
+                                <span class="value">1,284</span>
+                            </div>
+                            <div class="report-stat">
+                                <span class="label">Low Stock</span>
+                                <span class="value">23</span>
+                            </div>
+                            <div class="report-stat">
+                                <span class="label">Out of Stock</span>
+                                <span class="value">5</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline btn-block">Generate Report</button>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Expiry Report</h3>
+                        </div>
+                        <div class="report-summary">
+                            <div class="report-stat">
+                                <span class="label">Expiring < 30 days</span>
+                                <span class="value">12</span>
+                            </div>
+                            <div class="report-stat">
+                                <span class="label">Expiring < 60 days</span>
+                                <span class="value">28</span>
+                            </div>
+                            <div class="report-stat">
+                                <span class="label">Expired</span>
+                                <span class="value">0</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline btn-block">Generate Report</button>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Customer Report</h3>
+                        </div>
+                        <div class="report-summary">
+                            <div class="report-stat">
+                                <span class="label">Total Customers</span>
+                                <span class="value">856</span>
+                            </div>
+                            <div class="report-stat">
+                                <span class="label">New This Month</span>
+                                <span class="value">42</span>
+                            </div>
+                            <div class="report-stat">
+                                <span class="label">Active</span>
+                                <span class="value">723</span>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline btn-block">Generate Report</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div class="page" id="settings-page">
+                <div class="settings-grid">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>General Settings</h3>
+                        </div>
+                        <form class="settings-form">
+                            <div class="form-group">
+                                <label>Pharmacy Name</label>
+                                <input type="text" class="form-control" value="PharmaCare">
+                            </div>
+                            <div class="form-group">
+                                <label>Address</label>
+                                <textarea class="form-control" rows="3">123 Medical Street, Healthcare City, HC 12345</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label>Phone</label>
+                                <input type="text" class="form-control" value="+1 555-0123">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" class="form-control" value="info@pharmacare.com">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </form>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Notification Settings</h3>
+                        </div>
+                        <form class="settings-form">
+                            <div class="form-check">
+                                <input type="checkbox" checked id="lowStockNotif">
+                                <label for="lowStockNotif">Low stock alerts</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" checked id="expiryNotif">
+                                <label for="expiryNotif">Expiry date alerts</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" id="orderNotif">
+                                <label for="orderNotif">New order notifications</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="checkbox" checked id="dailyReport">
+                                <label for="dailyReport">Daily summary reports</label>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Medicine Modal -->
+    <div class="modal" id="medicineModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Add New Medicine</h3>
+                <button class="btn-icon close-modal"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="medicineForm" enctype="multipart/form-data">
+                <!-- Product Image Upload -->
+                <div class="form-group image-upload-group">
+                    <label>Product Image</label>
+                    <div class="image-upload-box" id="imageUploadBox">
+                        <input type="file" name="image" id="medicineImage" accept="image/*" class="image-input">
+                        <div class="upload-placeholder" id="uploadPlaceholder">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <span>Click to upload image</span>
+                            <small>JPG, PNG, GIF, WEBP (max 5MB)</small>
+                        </div>
+                        <img id="imagePreview" class="image-preview" style="display: none;">
+                        <button type="button" class="btn-icon remove-image" id="removeImage" style="display: none;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Medicine Name *</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Generic Name</label>
+                        <input type="text" name="generic_name" class="form-control">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select name="category_id" class="form-control" required>
+                            <option value="">Select Category</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Supplier</label>
+                        <select name="supplier_id" class="form-control">
+                            <option value="">Select Supplier</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Stock Quantity *</label>
+                        <input type="number" name="stock_quantity" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Unit Price (৳) *</label>
+                        <input type="number" name="unit_price" step="0.01" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Expiry Date *</label>
+                        <input type="date" name="expiry_date" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Batch Number</label>
+                        <input type="text" name="batch_number" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" class="form-control" rows="3" placeholder="Enter product description, usage instructions, side effects, etc."></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Medicine</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- AI Chatbot Widget -->
+    <div id="chatbot-widget" class="chatbot-widget">
+        <div class="chatbot-header">
+            <div class="chatbot-title">
+                <i class="fas fa-robot"></i>
+                <span>AI Pharmacy Assistant</span>
+            </div>
+            <button class="chatbot-toggle" onclick="toggleChatbot()">
+                <i class="fas fa-chevron-down"></i>
+            </button>
+        </div>
+        <div class="chatbot-body">
+            <div id="chatbot-messages" class="chatbot-messages">
+                <div class="message bot-message">
+                    <div class="message-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="message-content">
+                        <p>Hello! I am your AI pharmacy assistant. How can I help you today?</p>
+                        <span class="message-time">Just now</span>
+                    </div>
+                </div>
+            </div>
+            <div class="chatbot-quick-actions">
+                <!-- Customer Quick Actions -->
+                <button onclick="sendQuickMessage('Is Napa available?')" class="quick-btn">💊 Medicine</button>
+                <button onclick="sendQuickMessage('Napa side effects')" class="quick-btn">⚠️ Side Effects</button>
+                <button onclick="sendQuickMessage('What is the price of Napa?')" class="quick-btn">� Price</button>
+                <button onclick="sendQuickMessage('bKash payment')" class="quick-btn">💳 Payment</button>
+                <!-- Admin Quick Actions (Only visible to admin users) -->
+                <button onclick="sendQuickMessage('Total stock')" class="quick-btn admin-only">� Total Stock</button>
+                <button onclick="sendQuickMessage('Low stock')" class="quick-btn admin-only">🔴 Low Stock</button>
+                <button onclick="sendQuickMessage('Expiring soon')" class="quick-btn admin-only">⏰ Expiry</button>
+                <button onclick="sendQuickMessage('Today sales')" class="quick-btn admin-only">� Sales</button>
+            </div>
+            <div class="chatbot-input-area">
+                <input type="text" id="chatbot-input" placeholder="Type your message..." 
+                       onkeypress="if(event.key==='Enter') sendChatMessage()">
+                <button onclick="sendChatMessage()" class="send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <button id="chatbot-fab" class="chatbot-fab" onclick="toggleChatbot()">
+        <i class="fas fa-robot"></i>
+        <span class="fab-tooltip">AI Assistant</span>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+    
+    <script>
+    // Chatbot functionality
+    let chatbotSessionId = localStorage.getItem('chatbot_session_id') || generateSessionId();
+    localStorage.setItem('chatbot_session_id', chatbotSessionId);
+    
+    function generateSessionId() {
+        return 'chat_' + Math.random().toString(36).substr(2, 9);
+    }
+    
+    function toggleChatbot() {
+        const widget = document.getElementById('chatbot-widget');
+        const fab = document.getElementById('chatbot-fab');
+        widget.classList.toggle('active');
+        fab.classList.toggle('hidden');
+        if (widget.classList.contains('active')) {
+            loadChatHistory();
+        }
+    }
+    
+    function sendQuickMessage(message) {
+        document.getElementById('chatbot-input').value = message;
+        sendChatMessage();
+    }
+    
+    async function sendChatMessage() {
+        const input = document.getElementById('chatbot-input');
+        const message = input.value.trim();
+        
+        if (!message) return;
+        
+        // Add user message
+        addMessage(message, 'user');
+        input.value = '';
+        
+        // Show typing indicator
+        showTypingIndicator();
+        
+        try {
+            const response = await fetch('api/ai_chatbot.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    message: message,
+                    session_id: chatbotSessionId
+                })
+            });
+            
+            const data = await response.json();
+            
+            // Remove typing indicator
+            removeTypingIndicator();
+            
+            if (data.success) {
+                addMessage(data.data.response, 'bot');
+            } else {
+                addMessage('Sorry, I encountered an error. Please try again.', 'bot');
+            }
+        } catch (error) {
+            removeTypingIndicator();
+            addMessage('Sorry, I\'m having trouble connecting. Please try again later.', 'bot');
+            console.error('Chatbot error:', error);
+        }
+    }
+    
+    function addMessage(text, sender) {
+        const messagesDiv = document.getElementById('chatbot-messages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${sender}-message`;
+        
+        const avatar = sender === 'bot' ? '<i class="fas fa-robot"></i>' : '<i class="fas fa-user"></i>';
+        const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        
+        // Convert newlines to HTML breaks
+        const formattedText = text.replace(/\n/g, '<br>');
+        
+        messageDiv.innerHTML = `
+            <div class="message-avatar">${avatar}</div>
+            <div class="message-content">
+                <p>${formattedText}</p>
+                <span class="message-time">${time}</span>
+            </div>
+        `;
+        
+        messagesDiv.appendChild(messageDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+    
+    function showTypingIndicator() {
+        const messagesDiv = document.getElementById('chatbot-messages');
+        const typingDiv = document.createElement('div');
+        typingDiv.id = 'typing-indicator';
+        typingDiv.className = 'message bot-message';
+        typingDiv.innerHTML = `
+            <div class="message-avatar"><i class="fas fa-robot"></i></div>
+            <div class="message-content">
+                <div class="typing-indicator">
+                    <span></span><span></span><span></span>
+                </div>
+            </div>
+        `;
+        messagesDiv.appendChild(typingDiv);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+    
+    function removeTypingIndicator() {
+        const typingDiv = document.getElementById('typing-indicator');
+        if (typingDiv) {
+            typingDiv.remove();
+        }
+    }
+    
+    async function loadChatHistory() {
+        try {
+            const response = await fetch(`api/chatbot_history.php?session_id=${chatbotSessionId}&limit=50`);
+            const data = await response.json();
+            
+            if (data.success && data.data.conversations.length > 0) {
+                const messagesDiv = document.getElementById('chatbot-messages');
+                messagesDiv.innerHTML = ''; // Clear default message
+                
+                data.data.conversations.forEach(conv => {
+                    addMessage(conv.message, 'user');
+                    addMessage(conv.response, 'bot');
+                });
+            }
+        } catch (error) {
+            console.error('Failed to load chat history:', error);
+        }
+    }
+    
+    // Check user role and show admin buttons if applicable
+    function updateChatbotButtons() {
+        const adminButtons = document.querySelectorAll('.quick-btn.admin-only');
+        
+        // Check if user is logged in and is admin
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            try {
+                // Decode JWT token to get user role
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                const userRole = payload.role || payload.data?.role;
+                
+                if (userRole === 'admin' || userRole === 'super_admin') {
+                    adminButtons.forEach(btn => btn.classList.add('visible'));
+                }
+            } catch (e) {
+                console.log('Could not determine user role');
+            }
+        }
+    }
+    
+    // Alternative: Check from currentUser object if available
+    function checkAdminFromUser() {
+        if (typeof currentUser !== 'undefined' && currentUser) {
+            if (currentUser.role === 'admin' || currentUser.role === 'pharmacist') {
+                document.querySelectorAll('.quick-btn.admin-only').forEach(btn => {
+                    btn.classList.add('visible');
+                });
+            }
+        }
+    }
+    
+    // Initialize chatbot on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Chatbot is hidden by default, user needs to click FAB
+        // Check admin status after a short delay to allow user data to load
+        setTimeout(() => {
+            updateChatbotButtons();
+            checkAdminFromUser();
+        }, 500);
+    });
+    
+    // Also update when toggling chatbot
+    const originalToggleChatbot = toggleChatbot;
+    toggleChatbot = function() {
+        originalToggleChatbot();
+        updateChatbotButtons();
+        checkAdminFromUser();
+    };
+    </script>
+</body>
+</html>

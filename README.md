@@ -50,7 +50,7 @@ This project is an AI-based Smart Pharmacy Management System designed to manage 
 
 ## Tools & Technologies
 
-* HTML, CSS
+* HTML, CSS, JavaScript
 * MySQL
 * Rule-based AI & Chatbot
 * VS Code
